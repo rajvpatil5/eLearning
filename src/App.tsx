@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "./App.css";
 import Home from "./pages/Home";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import NoPage from "./pages/NoPage/NoPage";
 import AllCourses from "./pages/AllCourses/AllCourses";
 import CourseDetails from "./pages/CourseDetails/CourseDetails";
@@ -89,18 +89,33 @@ function App() {
     }
   }, [currentUser]);
 
-  return (
-    <>
+  const navigate = useNavigate();
+  const loginHandler = async () => {
+    navigate("/login");
+  };
+  useEffect(() => {
+    if (currentUser) loginHandler();
+  }, []);
+
+  if (!currentUser) {
+    return (
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/allcourses" element={<AllCourses />} />
-        <Route path="/course-details/:id" element={<CourseDetails />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/*" element={<NoPage />} />
       </Routes>
-    </>
+    );
+  }
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/allcourses" element={<AllCourses />} />
+      <Route path="/course-details/:id" element={<CourseDetails />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/*" element={<NoPage />} />
+    </Routes>
   );
 }
 
