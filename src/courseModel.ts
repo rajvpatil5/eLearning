@@ -4,7 +4,7 @@ type SyllabusItem = {
   content: string;
 };
 
-type Course = {
+export type Course = {
   id: number;
   name: string;
   instructor: string;

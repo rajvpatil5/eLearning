@@ -47,10 +47,10 @@ export const createUserDocumentFromAuth = async (
   additionalInfo = {}
 ) => {
   const userDocRef = doc(db, "users", uid);
-  //console.log(userDocRef);
+  ////console.log(userDocRef);
   const userSnapshot = await getDoc(userDocRef);
-  //console.log(userSnapshot);
-  //console.log(userSnapshot.exists());
+  ////console.log(userSnapshot);
+  ////console.log(userSnapshot.exists());
 
   if (!userSnapshot.exists()) {
     const createdAt = new Date();
@@ -99,7 +99,7 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const createAuthUserWithEmailandPassword = async (email, password) => {
   if (!email || !password) return;
   const response = await createUserWithEmailAndPassword(auth, email, password);
-  //console.log(response);
+  ////console.log(response);
 
   return response;
 };
@@ -107,7 +107,7 @@ export const createAuthUserWithEmailandPassword = async (email, password) => {
 export const signInAuthUserWithEmailandPassword = async (email, password) => {
   if (!email || !password) return;
   const response = await signInWithEmailAndPassword(auth, email, password);
-  //console.log(response);
+  ////console.log(response);
   return response;
 };
 export const signOutUser = async () => await signOut(auth);
@@ -123,10 +123,10 @@ export const fetchEnrolledCourse = async (userId) => {
 
     if (docSnapshot.exists()) {
       const userEnrolled = docSnapshot.data().enrolled || [];
-      console.log(userEnrolled);
+      //console.log(userEnrolled);
       return userEnrolled;
     } else {
-      console.log("Document does not exist");
+      //console.log("Document does not exist");
       return [];
     }
   } catch (error) {
@@ -138,15 +138,15 @@ export const fetchEnrolledCourse = async (userId) => {
 // To add enrolled course
 export const addEnrolledCourse = async (userId, enrolledCourse) => {
   try {
-    console.log(userId, enrolledCourse);
+    //console.log(userId, enrolledCourse);
     const myEnrolledRef = collection(db, "enrolled");
     const userDocRef = doc(myEnrolledRef, userId);
     const userSnapshot = await getDoc(userDocRef);
     if (userSnapshot.exists()) {
       const userEnrolled = userSnapshot.data().enrolled || [];
-      console.log("Original enrolled:", userEnrolled);
+      //console.log("Original enrolled:", userEnrolled);
       const updatedEnrolled = [...userEnrolled, enrolledCourse];
-      console.log("Updated enrolled:", updatedEnrolled);
+      //console.log("Updated enrolled:", updatedEnrolled);
       await setDoc(userDocRef, { enrolled: updatedEnrolled }, { merge: true });
     }
   } catch (error) {
@@ -161,11 +161,11 @@ export const removeEnrolledCourse = async (userId, enrolledId) => {
   const userSnapshot = await getDoc(userDocRef);
   if (userSnapshot.exists()) {
     const userEnrolled = userSnapshot.data().enrolled || [];
-    console.log(userEnrolled);
+    //console.log(userEnrolled);
     const updatedEnrolled = userEnrolled.filter(
       (course) => course.id !== enrolledId
     );
-    console.log(updatedEnrolled);
+    //console.log(updatedEnrolled);
     await updateDoc(userDocRef, { enrolled: updatedEnrolled });
   }
 };
@@ -178,10 +178,10 @@ export const fetchCompleteCourse = async (userId) => {
 
     if (docSnapshot.exists()) {
       const userComplete = docSnapshot.data().complete || [];
-      console.log(userComplete);
+      //console.log(userComplete);
       return userComplete;
     } else {
-      console.log("Document does not exist");
+      //console.log("Document does not exist");
       return [];
     }
   } catch (error) {
@@ -213,13 +213,13 @@ export const addCompleteCourse = async (userId, completeCourse) => {
 // Function to add data to Firestore
 export const addDataToFirestore = async (jsonData) => {
   try {
-    console.log("inside addDataToFirestore function");
-    console.log(jsonData);
+    //console.log("inside addDataToFirestore function");
+    //console.log(jsonData);
     for (const documentId in jsonData) {
       if (Object.prototype.hasOwnProperty.call(jsonData, documentId)) {
         const documentData = jsonData[documentId];
         const docRef = await addDoc(collection(db, "allCourses"), documentData);
-        console.log(`Document written with ID: ${docRef.id}`);
+        //console.log(`Document written with ID: ${docRef.id}`);
       }
     }
   } catch (error) {
@@ -230,7 +230,7 @@ export const addDataToFirestore = async (jsonData) => {
 // To fetch all courses from firebase
 export const fetchAllCourses = async () => {
   try {
-    console.log("inside fetchDataFromFirestore function");
+    //console.log("inside fetchDataFromFirestore function");
     const querySnapshot = await getDocs(collection(db, "allCourses"));
 
     const data = [];
@@ -239,7 +239,7 @@ export const fetchAllCourses = async () => {
       data.push(doc.data());
     });
 
-    console.log("Fetched data:", data);
+    //console.log("Fetched data:", data);
     return data;
   } catch (error) {
     console.error("Error fetching documents: ", error);
@@ -248,13 +248,13 @@ export const fetchAllCourses = async () => {
 };
 
 export const fetchFavouriteCourses = (userId, callback) => {
-  console.log("inside fetchFavouriteCourses");
+  //console.log("inside fetchFavouriteCourses");
   try {
     const userDocRef = doc(collection(db, "Favourites"), userId);
     const unsubscribe = onSnapshot(userDocRef, (doc) => {
       if (doc.exists()) {
         const userFavorites = doc.data().favouritesData || [];
-        console.log(userFavorites);
+        //console.log(userFavorites);
         callback(userFavorites);
       } else {
         callback([]);

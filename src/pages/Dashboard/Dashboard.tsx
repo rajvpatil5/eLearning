@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import * as React from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { setEnrolledCourse } from "../../app/enrolled-course/enrolledCourse.reducer";
 import { selectEnrolledCourse } from "../../app/enrolled-course/enrolledCourse.selector";
 import { selectCurrentUser } from "../../app/users/user.selector";
@@ -9,7 +9,6 @@ import Layout from "../../components/Layout/Layout";
 import { Button } from "../../components/ui/button";
 import {
   Card,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -19,9 +18,9 @@ import {
   fetchCompleteCourse,
   fetchEnrolledCourse,
   removeEnrolledCourse,
-  removeListingFromFavorites,
 } from "../../utils/firebase/firebase.utils";
 import { FaCheck } from "react-icons/fa";
+import { Course } from "../../courseModel";
 
 const Dashboard = () => {
   const currentEnrolledCourse = useSelector(selectEnrolledCourse);
@@ -32,7 +31,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchEnrolledCourse(currentUser.uid);
-      console.log("data of enrolled course", data);
+      //console.log("data of enrolled course", data);
       dispatch(setEnrolledCourse(data));
       setAllEnrollCou(data);
     };
@@ -42,13 +41,13 @@ const Dashboard = () => {
 
   const [completeCourse, setCompleteCourse] = useState([]);
 
-  const handleComplete = (courseId, courseData) => {
-    console.log("Mark as complete");
+  const handleComplete = (courseId: number, courseData: Course) => {
+    //console.log("Mark as complete");
     addCompleteCourse(currentUser.uid, courseData);
 
     removeEnrolledCourse(currentUser.uid, courseId);
     const updatedEnrolled = allEnrollCou.filter(
-      (course) => course.id !== courseId
+      (course: Course) => course.id !== courseId
     );
     setAllEnrollCou(updatedEnrolled);
 
@@ -60,7 +59,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchCompleteCourse(currentUser.uid);
-      console.log("data of enrolled course", data);
+      //console.log("data of enrolled course", data);
       setCompleteCourse(data);
     };
     currentUser && fetchData();
@@ -76,7 +75,7 @@ const Dashboard = () => {
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
             {allEnrollCou &&
-              allEnrollCou.map((course, index) => (
+              allEnrollCou.map((course: Course, index: number) => (
                 <div>
                   <Card className="m-4 cursor-pointer" key={course.id}>
                     <div>
@@ -120,7 +119,7 @@ const Dashboard = () => {
                 Completed Course
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-                {completeCourse.map((course, index) => (
+                {completeCourse.map((course: Course, index) => (
                   <div>
                     <Card className="m-4 cursor-pointer" key={course.id}>
                       <div>

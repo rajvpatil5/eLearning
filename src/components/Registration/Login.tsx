@@ -35,15 +35,15 @@ const Login = () => {
 
   const handleSubmitForm = async (data) => {
     try {
-      console.log("Inside handle submit function.");
+      //console.log("Inside handle submit function.");
       const { password, email } = data;
-      console.log(email, password);
+      //console.log(email, password);
 
       const { user } = await signInAuthUserWithEmailandPassword(
         email,
         password
       );
-      console.log(user);
+      //console.log(user);
 
       user && routeChange();
     } catch (error) {

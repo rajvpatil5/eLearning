@@ -29,16 +29,16 @@ const SignUp = () => {
   };
   const handleSubmitForm = async (data) => {
     try {
-      console.log(data);
+      //console.log(data);
       const { password, email, name } = data;
       const { user } = await createAuthUserWithEmailandPassword(
         email,
         password
       );
-      console.log(user);
+      //console.log(user);
       // setCurrentUser(user);
       const response = await createUserDocumentFromAuth(user, { name });
-      console.log(response);
+      //console.log(response);
 
       //Navigate to sign-in page
       user && routeChange();

@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useEffect } from "react";
 import "./App.css";
 import Home from "./pages/Home";
 import { Route, Routes } from "react-router-dom";
@@ -19,27 +17,48 @@ import {
 import {
   createMyListDocumentFromAuth,
   createUserDocumentFromAuth,
-  addDataToFirestore,
 } from "./utils/firebase/firebase.utils";
 
 import { selectCurrentUser } from "./app/users/user.selector";
 import { setCurrentUser } from "./app/users/user.reducer";
-import courseModel from "./courseModel";
 import { setEnrolledCourse } from "./app/enrolled-course/enrolledCourse.reducer";
 import { setmyFavCourse } from "./app/my-favourite/myFav.reducer";
+import * as React from "react";
+
+type SyllabusItem = {
+  week: number;
+  topic: string;
+  content: string;
+};
+
+type Course = {
+  id: number;
+  name: string;
+  instructor: string;
+  description: string;
+  enrollmentStatus: string;
+  thumbnail: string;
+  duration: string;
+  schedule: string;
+  location: string;
+  prerequisites: string[];
+  syllabus: SyllabusItem[];
+};
 
 function App() {
   const dispatch = useDispatch();
   // signOutUser();
   useEffect(() => {
-    const unsubscribe = onAuthStateChangedListner((user) => {
-      if (user) {
-        createUserDocumentFromAuth(user);
-        createMyListDocumentFromAuth(user);
+    const unsubscribe = onAuthStateChangedListner(
+      (user: { uid: String; displayName: String; email: String }) => {
+        if (user) {
+          createUserDocumentFromAuth(user);
+          createMyListDocumentFromAuth(user);
+        }
+        // //console.log(setCurrentUser(user));
+        dispatch(setCurrentUser(user));
       }
-      // console.log(setCurrentUser(user));
-      dispatch(setCurrentUser(user));
-    });
+    );
     return unsubscribe;
   }, []);
 
@@ -48,7 +67,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchEnrolledCourse(currentUser.uid);
-      console.log("data of enrolled course", data);
+      //console.log("data of enrolled course", data);
       dispatch(setEnrolledCourse(data));
     };
 
@@ -58,8 +77,8 @@ function App() {
   useEffect(() => {
     if (currentUser) {
       const unsubscribefetchFavouriteListing = fetchFavouriteCourses(
-        currentUser?.uid,
-        (userMyFavorites) => {
+        currentUser.uid,
+        (userMyFavorites: Course[]) => {
           dispatch(setmyFavCourse(userMyFavorites));
         }
       );

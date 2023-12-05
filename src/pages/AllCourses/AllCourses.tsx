@@ -23,8 +23,8 @@ import { Button } from "../../components/ui/button";
 
 const AllCourses = () => {
   // useEffect(() => {
-  //   console.log("inside add data useeffect");
-  //   console.log(courseModel);
+  //   //console.log("inside add data useeffect");
+  //   //console.log(courseModel);
   //   addDataToFirestore(courseModel);
   // }, []);
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ const AllCourses = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchAllCourses();
-      console.log("Data from Firestore:", data);
+      //console.log("Data from Firestore:", data);
       // Do something with the data
       setallCourse(data);
       setFilterAllCourse(data);
@@ -44,19 +44,19 @@ const AllCourses = () => {
   }, []);
 
   useEffect(() => {
-    console.log(allCourse);
+    //console.log(allCourse);
   }, [allCourse]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log(value);
+    //console.log(value);
     const filterData = allCourse.filter(
       (course) =>
         course.name.toLowerCase().includes(value.toLowerCase()) ||
         course.instructor.toLowerCase().includes(value.toLowerCase())
     );
     setFilterAllCourse(filterData);
-    console.log(filterData);
+    //console.log(filterData);
   };
 
   return (

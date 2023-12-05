@@ -46,7 +46,7 @@ const CourseDetails = () => {
   const currentEnrolledCourse = useSelector(selectEnrolledCourse);
 
   const onClickEnroll = () => {
-    console.log("Click on enroll btn");
+    //console.log("Click on enroll btn");
     toast({
       title: "Congratulations! You have successfully enrolled in the course.",
       duration: 2000,
